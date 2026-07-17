@@ -400,10 +400,13 @@ st.markdown(
 
         .metric-value {{
             color: #ffffff;
-            font-size: 2rem;
+            font-size: clamp(1.45rem, 2.4vw, 2rem);
             font-weight: 850;
             line-height: 1.1;
             margin-top: 0.55rem;
+            overflow-wrap: normal;
+            white-space: normal;
+            word-break: normal;
         }}
 
         .metric-note {{
@@ -1380,25 +1383,25 @@ elif kpi_basis == "Institutes" or analysis_scope == "Institutes":
     status_scope_pill = f'<span class="status-pill">{fmt_number(institute_count)} institutes</span>'
 else:
     status_scope_pill = f'<span class="status-pill">{fmt_number(scope_count_value)} {scope_count_label}</span>'
-year_scope_pill = f'<span class="status-pill">{safe_html(collection_year)}</span>'
 total_status_label = "device requests" if phase_one_view else "total requests"
-phase_one_units_pill = f'<span class="status-pill">{fmt_number(phase_one_units)} device units</span>' if phase_one_view else ""
+status_pills = [
+    '<span class="status-pill">Refresh: hourly</span>',
+    f'<span class="status-pill">Updated {safe_html(latest_refresh)}</span>',
+    f'<span class="status-pill">{safe_html(collection_year)}</span>',
+    f'<span class="status-pill">{fmt_number(total_requests)} {safe_html(total_status_label)}</span>',
+]
+if phase_one_view:
+    status_pills.append(f'<span class="status-pill">{fmt_number(phase_one_units)} device units</span>')
+status_pills.append(status_scope_pill)
 
 st.markdown(
-    f"""
-        <div class="app-hero">
-            <div class="eyebrow">Assistive device dashboard</div>
-            <h1 class="hero-title">Assistive Device Demand Dashboard</h1>
-            <div class="status-row">
-                <span class="status-pill">Refresh: hourly</span>
-                <span class="status-pill">Updated {safe_html(latest_refresh)}</span>
-                {year_scope_pill}
-                <span class="status-pill">{fmt_number(total_requests)} {safe_html(total_status_label)}</span>
-                {phase_one_units_pill}
-                {status_scope_pill}
-            </div>
-        </div>
-    """,
+    (
+        '<div class="app-hero">'
+        '<div class="eyebrow">Assistive device dashboard</div>'
+        '<h1 class="hero-title">Assistive Device Demand Dashboard</h1>'
+        f'<div class="status-row">{"".join(status_pills)}</div>'
+        '</div>'
+    ),
     unsafe_allow_html=True,
 )
 
