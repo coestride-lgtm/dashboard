@@ -1143,6 +1143,7 @@ collection_year = st.sidebar.radio(
     key="collection_year",
 )
 phase_one_view = collection_year == YEAR_LAST
+phase_scope_changed = st.session_state.get("_phase_filter_scope") != collection_year
 
 if collection_year == YEAR_CURRENT:
     school_df = current_school_df.copy()
@@ -1185,6 +1186,18 @@ source_base_df = {
 }[analysis_scope]
 
 districts = sorted_column_values(source_base_df, "District")
+if phase_scope_changed:
+    for filter_key in [
+        "districts_filter",
+        "schools_filter",
+        "categories_filter",
+        "devices_filter",
+        "institutes_filter",
+        "priorities_filter",
+        "genders_filter",
+    ]:
+        st.session_state.pop(filter_key, None)
+    st.session_state["_phase_filter_scope"] = collection_year
 selected_districts = render_slicer("Districts", districts, "districts_filter", "Choose districts")
 
 district_scope = source_base_df[source_base_df["District"].isin(selected_districts)] if selected_districts else source_base_df.iloc[0:0]
@@ -1361,22 +1374,15 @@ top_district = (
     )
 )
 latest_refresh = datetime.now().strftime("%d %b %Y, %I:%M %p")
-status_scope_pill = (
-    f'<span class="status-pill">{fmt_number(phase_one_schools)} schools</span>'
-    if phase_one_view
-    else (
-    f'<span class="status-pill">{fmt_number(institute_count)} institutes</span>'
-    if kpi_basis == "Institutes" or analysis_scope == "Institutes"
-    else f'<span class="status-pill">{fmt_number(scope_count_value)} {scope_count_label}</span>'
-    )
-)
+if phase_one_view:
+    status_scope_pill = f'<span class="status-pill">{fmt_number(phase_one_schools)} schools</span>'
+elif kpi_basis == "Institutes" or analysis_scope == "Institutes":
+    status_scope_pill = f'<span class="status-pill">{fmt_number(institute_count)} institutes</span>'
+else:
+    status_scope_pill = f'<span class="status-pill">{fmt_number(scope_count_value)} {scope_count_label}</span>'
 year_scope_pill = f'<span class="status-pill">{safe_html(collection_year)}</span>'
 total_status_label = "device requests" if phase_one_view else "total requests"
-phase_one_units_pill = (
-    f'<span class="status-pill">{fmt_number(phase_one_units)} device units</span>'
-    if phase_one_view
-    else ""
-)
+phase_one_units_pill = f'<span class="status-pill">{fmt_number(phase_one_units)} device units</span>' if phase_one_view else ""
 
 st.markdown(
     f"""
