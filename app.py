@@ -27,9 +27,9 @@ LAST_YEAR_DOWNLOAD_URL = (
     "https://innovationstrategiccouncil-my.sharepoint.com/:x:/g/personal/"
     "stride_kdisc_kerala_gov_in/IQB5AwKgFLXdQZ3xlHHthLDoAZdXsVA45jLSFXfcC_PAqTw?download=1"
 )
-YEAR_ALL = "All years"
-YEAR_CURRENT = "Current year"
-YEAR_LAST = "Last year"
+YEAR_ALL = "Phases"
+YEAR_CURRENT = "Phase 2"
+YEAR_LAST = "Phase 1"
 CATALOG_PATHS = [
     PROJECT_DIR / "data" / "DEVICE_INFORMATION_CATALOG_FINAL.xlsx",
     Path(r"C:\Users\hp\Downloads\DEVICE_INFORMATION_CATALOG_FINAL.xlsx"),
