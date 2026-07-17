@@ -27,7 +27,7 @@ LAST_YEAR_DOWNLOAD_URL = (
     "https://innovationstrategiccouncil-my.sharepoint.com/:x:/g/personal/"
     "stride_kdisc_kerala_gov_in/IQB5AwKgFLXdQZ3xlHHthLDoAZdXsVA45jLSFXfcC_PAqTw?download=1"
 )
-YEAR_ALL = "Phases"
+YEAR_ALL = "All phases"
 YEAR_CURRENT = "Phase 2"
 YEAR_LAST = "Phase 1"
 CATALOG_PATHS = [
@@ -1125,7 +1125,7 @@ if st.sidebar.button("Refresh data"):
 st.sidebar.divider()
 
 collection_year = st.sidebar.selectbox(
-    "Dashboard year",
+    "Phase",
     options=[YEAR_ALL, YEAR_CURRENT, YEAR_LAST],
     key="collection_year",
 )
